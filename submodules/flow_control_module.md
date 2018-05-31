@@ -21,27 +21,27 @@ The first step undertaken was to draw up a detailed technical specification. The
 **Functional Requirements**
 | Requirement| Comments |
 | :---: | :---:|
-The system *must* be fail-safe. | In the absence of power, there must be zero flow. This is essential for safety.
-The system *must* be able to modulate flow rate dependent on some form of input signal. | Signal form unspecified. 
-The system *must* be able to cope with flow rates exceeding 6 L/hour. | Given by the Majico photocatalyst flow rate (see specification - add link!)
+|The system *must* be fail-safe. | In the absence of power, there must be zero flow. This is essential for safety.|
+|The system *must* be able to modulate flow rate dependent on some form of input signal. | Signal form unspecified. |
+|The system *must* be able to cope with flow rates exceeding 6 L/hour. | Given by the Majico photocatalyst flow rate (see specification - add link!)|
 
 **Usability Requirements**
 | Requirement| Comments |
 | :---: | :---:|
-The system *must* be able to operate in varying sunlight levels. | For example, for an electrical system, this requirement means that the system must accept a range of input voltages (6V-25V D.C. e.g. from a solar panel).
-The system *must* be compatible with a range of water supply pressures. | - 
+|The system *must* be able to operate in varying sunlight levels. | For example, for an electrical system, this requirement means that the system must accept a range of input voltages (6V-25V D.C. e.g. from a solar panel).|
+|The system *must* be compatible with a range of water supply pressures. | - |
 
 **Reliability Requirements**
 | Requirement| Comments |
 | :---: | :---:|
-The system *must* be able to operate in temperatures between between 0&deg;C and  60&deg;C. | This gives a marginal around typical temperatures in Tanzania. 
-The system *must* be resistant to rain. | There is a monsoon season in Tanzania!
+|The system *must* be able to operate in temperatures between between 0&deg;C and  60&deg;C. | This gives a marginal around typical temperatures in Tanzania. |
+The system *must* be resistant to rain. | There is a monsoon season in Tanzania!|
 
 **Supportability Requirements**
 | Requirement| Comments |
 | :---: | :---:|
-The system *should* be easily repairable if there is component failure. | - 
-The system *should* allow for easy circuit board replacement. | In case of component failure. This requirement mainly relates to an enclosure for such a system. 
+|The system *should* be easily repairable if there is component failure. | - 
+|The system *should* allow for easy circuit board replacement. | In case of component failure. This requirement mainly relates to an enclosure for such a system. |
 
 ### Brainstorming
 The key decision to make is how to module the flow of fluid. Two possible methods of controlling flow rate are as outlined below. 
