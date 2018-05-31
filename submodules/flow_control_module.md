@@ -6,7 +6,9 @@
     - [The Design Process](#the-design-process)
         - [Technical Specification](#technical-specification)
         - [Brainstorming](#brainstorming)
-        - [Key Design Decisions](#key-design-decisions)
+            - [So why use a valve?](#so-why-use-a-valve)
+            - [Powering the valve](#powering-the-valve)
+    - [Our Design](#our-design)
 
 <!-- /TOC -->
 ## Introduction
@@ -18,39 +20,24 @@ The purpose of this document is two-fold; not only should it aid you in understa
 ### Technical Specification
 The first step undertaken was to draw up a detailed technical specification. The following specification is intended to be **solution neutral**.
 
-**Functional Requirements**
+**Requirements**
 
-| Requirement| Comments |
-| :---: | :---:|
-|The system *must* be fail-safe. | In the absence of power, there must be zero flow. This is essential for safety.|
-|The system *must* be able to modulate flow rate dependent on some form of input signal. | Signal form unspecified. |
-|The system *must* be able to cope with flow rates exceeding 6 L/hour. | Given by the Majico photocatalyst flow rate (see specification - add link!)|
-
-**Usability Requirements**
-
-| Requirement| Comments |
-| :---: | :---:|
-|The system *must* be able to operate in varying sunlight levels. | For example, for an electrical system, this requirement means that the system must accept a range of input voltages (6V-25V D.C. e.g. from a solar panel).|
-|The system *must* be compatible with a range of water supply pressures. | - |
-
-**Reliability Requirements**
-
-| Requirement| Comments |
-| :---: | :---:|
-|The system *must* be able to operate in temperatures between between 0&deg;C and  60&deg;C. | This gives a marginal around typical temperatures in Tanzania. |
-The system *must* be resistant to rain. | There is a monsoon season in Tanzania!|
-
-**Supportability Requirements**
-
-| Requirement| Comments |
-| :---: | :---:|
-|The system *should* be easily repairable if there is component failure. | - 
-|The system *should* allow for easy circuit board replacement. | In case of component failure. This requirement mainly relates to an enclosure for such a system. |
+| Requirement Type | Requirement| Comments |
+| :---: | :---: | :---: | 
+| Functionality |The system *must* be fail-safe. | In the absence of power, there must be zero flow. This is essential for safety.|
+| Functionality |The system *must* be able to modulate flow rate dependent on some form of input signal. | Signal form unspecified. |
+| Functionality |The system *must* be able to cope with flow rates exceeding 6 L/hour. | Given by the Majico photocatalyst flow rate (see specification - add link!)|
+| Usability | The system *must* be able to operate in varying sunlight levels. | For example, for an electrical system, this requirement means that the system must accept a range of input voltages (6V-25V D.C. e.g. from a solar panel).|
+| Usability | The system *must* be compatible with a range of water supply pressures. | - |
+| Reliability | The system *must* be able to operate in temperatures between between 0&deg;C and  60&deg;C. | This gives a marginal around typical temperatures in Tanzania. |
+| Reliability | The system *must* be resistant to rain. | There is a monsoon season in Tanzania!|
+| Supportability | The system *should* be easily repairable if there is component failure. | - 
+| Supportability | The system *should* allow for easy circuit board replacement. | In case of component failure. This requirement mainly relates to an enclosure for such a system. |
 
 ### Brainstorming
 The key decision to make is how to module the flow of fluid. Two possible methods of controlling flow rate are as outlined below. 
 1. Active Control\
-  Fluid can be kept in a reservoir and *pumped* directly to another location. This control is said to be active because with no input, there would be no flow rate.
+  Fluid can be kept in a reservoir and *pumped* directly to another location.
   
     Advantages:
       - Fail-safe. Without power, fluid is unable to flow (assuming the flow is initially at rest). 
@@ -60,7 +47,7 @@ The key decision to make is how to module the flow of fluid. Two possible method
       - High power consumption.
 
 2. Passive Control\
-  If fluid is already flowing, its flow can be hindered or slowed down in order to control the flow rate. This technique is passive because the fluid is already moving. 
+  If fluid is already flowing, its flow can be hindered or slowed down in order to control the flow rate e.g. by moving a plate across a pipe. 
   
     Advantages:
       - Energy is not expended in moving fluid. It is easy to create fluid flow (e.g. by holding a reservoir at a height) and thus energy expenditure on movement is wasteful. 
@@ -68,20 +55,21 @@ The key decision to make is how to module the flow of fluid. Two possible method
 
     Disadvantages:
       - Need to account for accumulation of fluid at the valve input. 
+      - Need fluid flow. 
       - No direct control over instantaneous fluid velocity/flow rate. 
 
-    This method lends itself better to purely mechanical solutions compared to active control. For example, a block of material could expand when heated (suggesting the presence of sunlight) and then block flow rate through a bypass pipe (thus perhaps increasing the flow rate through another pipe). 
+    This method lends itself better to purely mechanical solutions compared to active control. For example, a block of material could expand when heated (suggesting the presence of sunlight) and then block flow rate through a bypass pipe (thus perhaps increasing the flow rate through another pipe). However, at this stage of the design, an electrical approach had already been chosen. 
       
-### Key Design Decisions
-At this point, significant thought had been placed into the design and a number of key design decisions were made.         
+#### So why use a valve?
+The high power draw associated with active control led the team to choose a passive option for flow control. Given that it is very easy to create a fluid flow by holding fluid in an elevated reservoir and that fail-safe solenoid valves are readily available, it was decided that this form of flow control would be appropriate for this project. 
+
+#### Powering the valve
+Micr
 
 
 
-
-
-
-
-
+## Our Design
+After the brainstorming process, a design could be created. 
 
 Author: Mrinank Sharma (`ms2314@cam.ac.uk`)\
 Last Updated: 31-5-2018
