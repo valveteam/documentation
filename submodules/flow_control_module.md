@@ -19,6 +19,7 @@ The purpose of this document is two-fold; not only should it aid you in understa
 The first step undertaken was to draw up a detailed technical specification. The following specification is intended to be **solution neutral**.
 
 **Functional Requirements**
+
 | Requirement| Comments |
 | :---: | :---:|
 |The system *must* be fail-safe. | In the absence of power, there must be zero flow. This is essential for safety.|
@@ -26,18 +27,21 @@ The first step undertaken was to draw up a detailed technical specification. The
 |The system *must* be able to cope with flow rates exceeding 6 L/hour. | Given by the Majico photocatalyst flow rate (see specification - add link!)|
 
 **Usability Requirements**
+
 | Requirement| Comments |
 | :---: | :---:|
 |The system *must* be able to operate in varying sunlight levels. | For example, for an electrical system, this requirement means that the system must accept a range of input voltages (6V-25V D.C. e.g. from a solar panel).|
 |The system *must* be compatible with a range of water supply pressures. | - |
 
 **Reliability Requirements**
+
 | Requirement| Comments |
 | :---: | :---:|
 |The system *must* be able to operate in temperatures between between 0&deg;C and  60&deg;C. | This gives a marginal around typical temperatures in Tanzania. |
 The system *must* be resistant to rain. | There is a monsoon season in Tanzania!|
 
 **Supportability Requirements**
+
 | Requirement| Comments |
 | :---: | :---:|
 |The system *should* be easily repairable if there is component failure. | - 
