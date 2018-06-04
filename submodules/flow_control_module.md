@@ -14,7 +14,12 @@
     - [Our Implementation](#our-implementation)
         - [The Schematic](#the-schematic)
         - [The PCB](#the-pcb)
-        - [The 3D Module](#the-3d-module)
+        - [The 3D Model](#the-3d-model)
+        - [The Valves](#the-valves)
+        - [Controlling the Valves](#controlling-the-valves)
+            - [L298P](#l298p)
+            - [LMD18201](#lmd18201)
+        - [Bill of Materials](#bill-of-materials)
     - [Testing Results](#testing-results)
         - [Valve Testing](#valve-testing)
     - [Recommendations](#recommendations)
@@ -101,21 +106,69 @@ Please note that footprint and component files (or *libraries*, using KiCad term
 ![Flow Control Module - Schematic](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-schematic.png)
 
 The schematic above shows the connections between different components within for the PCB. Note that:
-- There are two different H-Bridge chips; the [`L298P` (click for the datasheet)](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf) is a standard part, commonly used for hobby electronics and is fairly cheap.[`LMD18021T`](http://www.ti.com/lit/ds/symlink/lmd18201.pdf) which is about twice the price of the `L298P` but is more robust in terms of the input voltages it accepts and incorporates some advanced features such as a thermal flag output. Both were placed on the same board to allow each to be tested simultaneously. For each, a terminal block connects the output to the solenoid valve. 
+- There are two different H-Bridge chips; the [`L298P` (click for the datasheet)](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf) is a standard part, commonly used for hobby electronics and is fairly cheap. [`LMD18021T`](http://www.ti.com/lit/ds/symlink/lmd18201.pdf) which is about twice the price of the `L298P` but is more robust in terms of the input voltages it accepts and incorporates some advanced features such as a thermal flag output. Both were placed on the same board to allow each to be tested simultaneously. For each, a terminal block connects the output to the solenoid valve. 
 - A terminal block is used to connect the circuit to the power supply. 
 - 6-Pin Molex KK connectors are used to interface between the flow control module and the control module.
 - There are three indicator LEDS; one to show power from the main power supply (e.g. solar panel), the other two indicate which H-Bridge chip is being used. 
 
 ### The PCB
-![Flow Control Module - PCB](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-layout.png)
+![Flow Control Module - PCB](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/pcb-annotated.png)
 
 The image above shows the PCB layout. Please note the following:
+- Ground planes are **not** shown. 
+- The dimensions of the circuit board are (INSERT CORRECT DIMENSIONS HERE).
 - The terminal block connecting the PCB to the main power supply is in the top left of the board. 
-- The terminal blocks connecting the PCB to each solenoid valve are on the left of the board. 
-- **There is an error with this PCB** - the ground pad of the 
+- The terminal blocks connecting the PCB to each solenoid valve are on the left of the board. The valves do not have a polarity and thus can be connected either way around. 
+- **There is an error with this PCB** - the ground pad of the L298P chip should be connected to the ground plane but it is not. 
+- In our implementation, each of the status LEDs has been given a different colour.
 
-### The 3D Module
+![Molex Pinout](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/molex-pinout.png).
+
+The diagram above shows how the Molex KK connectors should be interfaced with other components. Molex KK diagrams reproduced from [MRO Electronics](http://www.mroelectronics.com/mro/product.php?id_product=11670) and [RS](https://uk.rs-online.com/web/p/pcb-headers/4838506).
+
+### The 3D Model
 ![Flow Control Module - 3D Module](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-3d-model.png)
+
+The diagram above shows a 3D model of the PCB. 
+
+### The Valves
+Two off-the-shelf solenoid valves were used with the above PCB:
+1. [Adafruit Solenoid Valve](http://cpc.farnell.com/adafruit/997/solenoid-valve-plastic-water-12v/dp/SW04771). This valve has a minimum pressure requirement of 0.03 MP and **liquid** can only flow in one direction. 
+2. [RS Hydralectic Solenoid Valve](https://uk.rs-online.com/web/p/solenoid-valves/0342023/). This has a higher minimum pressure requirement but is unidirectional. 
+
+The maximum flow rate for each valve is well above typical photocatalyst flow rates (around 6 L/hour). 
+
+Any solenoid valve can be used with the above PCB. 
+
+### Controlling the Valves
+In order to control the valves using the H-Bridges on the PCB, the required inputs must be understood. Correct connections must first be ensured (according to the Molex KK pinout diagram).
+#### L298P
+The `L298P` requires two digital inputs; input A and input B which are considered to be on if the voltage on the pins exceed 2.3V. There are no additional inputs or outputs. Thus the output of the solenoid valve can be controlled as follows. 
+
+| Input A | Input B| Valve State | 
+|  :---:  |  :---: |      :---:     | 
+| Low | Low | Closed | 
+| High | Low | Open | 
+| Low | High | Open | 
+| High | High | Closed | 
+
+Note that if both inputs are the same voltage, **the valve is held closed** electrically (similar to a 'brake' mode). This actually consumes power and could be optimised by 'disabling' the H-Bridge when no output is required - more on this later.  
+
+[Link to `L298P` Datasheet](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf).
+
+#### LMD18201
+The control using the `LMD18201` component is different. There are three digital inputs which are considered to be high when their voltage exceeds 2V.  There is also an additional output - a thermal flag. 
+
+| Pin| Input / Output? | Comments | 
+|  :---:  |  :---: |      :---:     | 
+| Brake | Input| If the output is a motor, the motor will brake if the input is high by shorting the terminals. This is not useful behaviour for a solenoid valve and thus **this input should be held low** i.e. connected to GND. | 
+| Direction | Input | This pin controls the direction of current flow between output pin 1 and 2. The valves are not polarised and thus the value of this pin is not important. | 
+| PWM | High | When this input is high, the solenoid valve is open. Otherwise, it is closed. | 
+| Thermal Flag | Output | This output is normally high. However, when the 'junction temperature' exceeds 145&deg;C the output becomes low. This can be used by the control module.| 
+
+[Link to `LMD18021T` Datasheet](http://www.ti.com/lit/ds/symlink/lmd18201.pdf)
+
+### Bill of Materials
 
 ## Testing Results
 ### Valve Testing
