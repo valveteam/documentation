@@ -1,3 +1,8 @@
+---
+author: Mrinank Sharma
+lastUpdated: 4-06-2018
+email: ms2314@cam.ac.uk
+---
 # Flow Control Module
 <!-- TOC -->
 
@@ -169,15 +174,27 @@ The control using the `LMD18201` component is different. There are three digital
 [Link to `LMD18021T` Datasheet](http://www.ti.com/lit/ds/symlink/lmd18201.pdf)
 
 ### Bill of Materials
+The bill of materials for the prototype implemented is as follows. **Note that component links are clickable to see where the component was purchased from**. 
+
+| Component | Value | Quantity | Unit Price (£) | Total Price (£) | 
+| :---: |    :---: |  :---: |    :---: |         :---: | 
+| [Unpolarised Capacitor](http://uk.farnell.com/murata/grm216r71h103ja01d/cap-mlcc-x7r-10nf-50v-0805/dp/8820090RL)| 10 nF | 2 | 0.08| 0.16 | 
+| [Diodes](http://uk.farnell.com/vishay/s07j-gs08/diode-switching-do219/dp/1617736?ost=1617736&scope=partnumberlookahead&exaMfpn=true&searchref=searchlookahead&ddkey=http%3Aen-GB%2FElement14_United_Kingdom%2Fw%2Fsearch) | - | 4 | 0.26 | 1.03 | 
+| [LEDs](http://uk.farnell.com/broadcom-limited/hsmg-c170/led-green-1-25mm-x-1-4mm-15mcd/dp/5790852?ost=5790852&ddkey=http%3Aen-GB%2FElement14_United_Kingdom%2Fsearch) | - | 3 | 0.48 | 1.45 |
+| [L298P (H-Bridge)](http://uk.farnell.com/stmicroelectronics/l298p/motor-driver-dc-stepper-4a-powerso/dp/2762686?ost=2762686&ddkey=http%3Aen-GB%2FElement14_United_Kingdom%2Fsearch) | - | 1| 4.97 | 4.97 |
+| [LMD18201 (H-Bridge)](http://uk.farnell.com/texas-instruments/lmd18201t-nopb/motor-ctrl-half-bridge-3a-to-220/dp/1469249?ost=1469249&ddkey=http%3Aen-GB%2FElement14_United_Kingdom%2Fsearch) | - | -| 12.16| 12.16 |
+| [Molex Connectors](https://uk.rs-online.com/web/p/pcb-headers/4838506/) | 01x06 | 2 | 0.27 | 1.54 |
+| [Terminal Blocks](https://uk.rs-online.com/web/p/pcb-terminal-blocks/3617667/?relevancy-data=636F3D3126696E3D4931384E525353746F636B4E756D626572266C753D656E266D6D3D6D61746368616C6C26706D3D5E285C647B362C377D5B4161426250705D297C285C647B337D5B5C732D2F255C2E2C5D5C647B332C347D5B4161426250705D3F292426706F3D3126736E3D592673723D2673743D52535F53544F434B5F4E554D4245522677633D4E4F4E45267573743D3336312D37363637267374613D3336313736363726) | 01x02 | 3| 0.45 | 1.35 |
+| [Resistor](http://uk.farnell.com/panasonic-electronic-components/erjp06f3000v/res-thick-film-300r-1-0-5w-0805/dp/1894177?ost=1894177&ddkey=http%3Aen-GB%2FElement14_United_Kingdom%2Fsearch)| 300 &#8486; (instead of 330 &#8486;)  | 2 | 0.11| 0.22|
+| [Resistor](http://uk.farnell.com/vishay/crcw0805680rfkea/res-thick-film-680r-1-0-125w-0805/dp/1653028?st=680%20ohm%20resistor%200805)| 680 &#8486; | 1 | 0.03| 0.03|
+| [(RS) Hydraelectric Solenoid Valve](https://uk.rs-online.com/web/p/solenoid-valves/0342023/?relevancy-data=636F3D3126696E3D4931384E525353746F636B4E756D626572266C753D656E266D6D3D6D61746368616C6C26706D3D5E285C647B362C377D5B4161426250705D297C285C647B337D5B5C732D2F255C2E2C5D5C647B332C347D5B4161426250705D3F292426706F3D3126736E3D592673723D2673743D52535F53544F434B5F4E554D4245522677633D4E4F4E45267573743D3334322D303233267374613D3033343230323326)| - | 1| 12.46| 12.46|
+| [Adafruit Solenoid Valve](http://cpc.farnell.com/adafruit/997/solenoid-valve-plastic-water-12v/dp/SW04771?ost=SW04771&ddkey=http%3Aen-CPC%2FCPC_United_Kingdom%2Fsearch)| - |1|7.22| 7.22 |
+| **Total** |||| 41.59 | 
 
 ## Testing Results
 ### Valve Testing
-At the moment, it is unclear 
+Multiple valves were ordered to determine their suitability. An experiment was performed where each valve was connected directly to a power supply and the input voltage was varied. 
 
 ## Recommendations
 ### Improving Our Design
 ### Choosing Components
-
-
-Author: Mrinank Sharma (`ms2314@cam.ac.uk`)\
-Last Updated: 4-6-2018
