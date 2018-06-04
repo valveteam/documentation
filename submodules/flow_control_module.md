@@ -27,6 +27,7 @@ email: ms2314@cam.ac.uk
         - [Bill of Materials](#bill-of-materials)
     - [Testing Results](#testing-results)
         - [Valve Testing](#valve-testing)
+        - [H-Bridge Testing](#h-bridge-testing)
     - [Recommendations](#recommendations)
         - [Improving Our Design](#improving-our-design)
         - [Choosing Components](#choosing-components)
@@ -193,7 +194,18 @@ The bill of materials for the prototype implemented is as follows. **Note that c
 
 ## Testing Results
 ### Valve Testing
-Multiple valves were ordered to determine their suitability. An experiment was performed where each valve was connected directly to a power supply and the input voltage was varied. 
+Multiple valves were ordered to determine their suitability. An experiment was performed where each valve was connected directly to a power supply and the input voltage was varied. The results of this experiment were found below. 
+
+![Valve Testing Results](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/valvecharacteristics.png)
+
+The key findings of this experiment are that:
+- The power draw is determined by the ohmic (real) part of the solenoid resistance, suspected to be characterised by the resistance of the inductor coils. The resistance of the Adafruit valve is smaller and thus when a fixed voltage is applied across the terminal ends, the power draw is higher (since P = V<sup>2</sup>/R). 
+- The RS Hydraelectric valve is able to actuate at voltages exceeding 4V whilst the Adafruit valve actuates at voltages exceeding 5V.
+- The Adafruit valve requires a lower pressure in order to drive flow through the valve (this was determined heuristically by attempting to push air through each valve). 
+- As the voltage applied to the valve increases, the power draw increases without confering any significant advantage. Therefore, **it may be advantageous to step down the input voltage into the valve** to reduce power consumption. This will still require a H-Bridge driver due to the high currents involved. 
+
+### H-Bridge Testing
+The power draw of each H-Bridge when idle and when powering the valve was determined (the power draw the each valve at a given voltage can be determined by using the results of the previous experiment). 
 
 ## Recommendations
 ### Improving Our Design
