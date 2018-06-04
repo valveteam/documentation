@@ -205,7 +205,14 @@ The key findings of this experiment are that:
 - As the voltage applied to the valve increases, the power draw increases without confering any significant advantage. Therefore, **it may be advantageous to step down the input voltage into the valve** to reduce power consumption. This will still require a H-Bridge driver due to the high currents involved. 
 
 ### H-Bridge Testing
-The power draw of each H-Bridge when idle and when powering the valve was determined (the power draw the each valve at a given voltage can be determined by using the results of the previous experiment). 
+The power draw of each H-Bridge when idle and when powering the valve was determined (the power draw the each valve at a given voltage can be determined by using the results of the previous experiment). Please see [this spreadsheet](https://docs.google.com/spreadsheets/d/1D01eadC7LQ3DVaPIUEnMTHFYi2akVzcx9Xcpumab2Tw/edit?usp=sharing) for more details of the calculations. 
+
+The power draw of **both** H-bridges when idle is around 0.24 W - due to the circuitry implemented, it is difficult to determine which H-Bridge is consuming more energy. **However, it was discovered that the `L298P`** **was faulty** and thus an [alternative H-Bridge](https://www.amazon.co.uk/Controller-Module-Bridge-Stepper-Arduino/dp/B00HNHUYSG/ref=sr_1_3?ie=UTF8&qid=1528128342&sr=8-3&keywords=H-Bridge) was used to calculate these powers. It is assumed (naively) that the idle H-Bridge draw is the same for each package in order to calculate the power requirement for all the additional circuitry of the alternative circuit. 
+
+The conclusions of this experiment were:
+- The idle power draw of each H-Bridge is fairly small, estimated to be approximately 120 mW. 
+- The additional power expended in the `L298P` when the valve is open is 0.77W whilst this figure is 0.35W for the `LMD18201`.
+- The voltage at the solenoid valve output is **lower for the `L298P` than the `LMD18201`** (9.9V v.s. 12V). As a result, even though the valve is fully open in each case and the power draw of the H-Bridge circuit is higher for the `L298P`, the **total power draw is lower for this chip** (5.04W v.s. 5.64W). Give that the `L298P` is much cheaper than the `LMD18201`, it may be a better option - more on this in the next section.  
 
 ## Recommendations
 ### Improving Our Design
