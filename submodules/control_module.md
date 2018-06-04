@@ -11,21 +11,24 @@ email: jyjt3@cam.ac.uk
 - [The Control Module](#the-control-module)
     - [Introduction](#introduction)
     - [Design Process](#design-process)
-        - [Technical Specifications](#technical-specifications)
+        - [Design Specifications](#design-specifications)
             - [Functionality](#functionality)
             - [Usability](#usability)
             - [Reliability](#reliability)
             - [Performance](#performance)
             - [Supportability](#supportability)
+        - [Design Limitations](#design-limitations)
     - [Implementation](#implementation)
+        - [Usage](#usage)
         - [Hardware](#hardware)
-            - [Bill of Materials](#bill-of-materials)
-    - [Software](#software)
-        - [Tunable functionality](#tunable-functionality)
-        - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
-        - [The slow PWM code](#the-slow-pwm-code)
-        - [Debug features](#debug-features)
-            - [Sample output](#sample-output)
+                - [Control Module Schematic](#control-module-schematic)
+                - [Control Module PCB](#control-module-pcb)
+                - [Bill of Materials](#bill-of-materials)
+        - [Software](#software)
+            - [Tunable functionality](#tunable-functionality)
+            - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
+            - [The slow PWM code](#the-slow-pwm-code)
+            - [Debug features](#debug-features)
 
 <!-- /TOC -->
 ## Introduction
@@ -33,9 +36,12 @@ The control module was designed to implement part of our team's proposed solutio
 This is intended to describe the hardware and software functionality of the **control module** for the *Solar Powered Valve*. 
 
 ## Design Process
+To implement the control module, there were three key design factors to consider and engineer towards. 
+* The first is to provide the flow module with the necessary input so that it is able to regulate it's flow. For this we were not certain if the solenoid valve will be able to respond to small changes in voltages sufficiently so we decided to modulate the flow using PWM. Whilst in principle it works, we soon realised that the solenoid valve used had a maximum operating frequency of around 20 Hz, so we implemented our own slow PWM which will be discussed in a [later section](#the-slow-pwm-code).
+* Secondly, we had to interface the microcontroller to the light sensor. Using an LDR and connecting it directly to an analog pin simply wouldn't cut it as it would severly limit the length of the cable as well as introduce a substantial amount of noise. Thus we selected the BH1750 for the light module which would communicate via I2C with the Arduino Micro. 
+* Lastly, the microcontroller itself should have sufficient features (inputs & outputs) so that the user is able to tweak certain parameters and understand how the microcontroller is behaving given a certain set of inputs. In particular, the control module had to have trimmers so that the upper and lower trigger bounds for flow can be adjusted to cope with different light levels. LEDs were added so that we can monitor the output signal into the flow module and thus, will be able to easily [troubleshoot](#debug-features) any issues we come across. 
 
-### Technical Specifications
-
+### Design Specifications
 #### Functionality
 * The system sends an input voltage into the **valve module** to control the flow rate using "slow PWM".
 * The system is able to measure the the lux levels sent by the **light module** with sufficient precision & reliability over I2C.
@@ -43,24 +49,22 @@ This is intended to describe the hardware and software functionality of the **co
 * The system has tunable lower and upper thresholds to control the minimum light level to allow flow and maximum light level to completely open the valve.
 * The system has tunable pulse widths/duty cycle lengths for easy debugging and can be optimised to improve the reliability of the valve. (the system is no longer restrained by the flow rate as the PWM can be made faster to respond to high flow rates)
 * The system boast break out connectors which allows additional functionality to be implemented at a later date. - e.g. flow rate sensor so that a proper PID controller could be put in place to optimise the flow rates.
-
 #### Usability
 * The system must have an input voltage from 6V to 20V.
 * The system has a logic HIGH value of 5V.
-
 #### Reliability
 * The system will always boot up in the correct state to carry out all the functionalities as given above.
 * The system should be operational in temperatures between 0-60℃.
-
 #### Performance
 * The system is able to respond to changes in light within a second. 
 * The system is limited by the performance of the solenoid valve which is only able to cope with frequencies up to 20 Hz. 
 * The system software is completely open source and can be altered for other flow regulation uses.
-
 #### Supportability
 * The system is built from cheap and readily available parts
+### Design Limitations
 
 ## Implementation
+### Usage
 
 ### Hardware
 The control module boasts
@@ -71,12 +75,11 @@ The control module boasts
 * Expansion port to allow the addition of another module, with a jumper to select between 5V and 3.3V.
 * MOSFET Circuits to isolate 3.3V circuits from 5V circuits.
 * I2C Repeaters to isolate capacitance as well as step up I2C voltages from 3.3V to 5V
-
+##### Control Module Schematic
 ![Control Module Schematic](https://imgur.com/GXw5ZXs.jpg)
-
+##### Control Module PCB
 ![Control Module PCB](https://imgur.com/bj9PgSz.jpg)
-
-#### Bill of Materials
+##### Bill of Materials
 | Desceiption                                        | Model                | Quantity | Price/Unit |        | 
 |----------------------------------------------------|----------------------|----------|------------|--------| 
 | 10uF Capacitors                                    | 10uF                 | 4        | £0.15      | £0.59  | 
@@ -99,10 +102,8 @@ The control module boasts
 | XP Power 3.3V Switching Regulator (4.75-32V Input) | TR_SERIES            | 1        | £5.41      | £5.41  | 
 | XP Power 5V Switching Regulator (4.75-32V Input)   | TR_SERIES            | 1        | £5.41      | £5.41  | 
 |                                                    |                      |          |   TOTAL    | £40.36 | 
-
-
-## Software
-###  Tunable functionality
+### Software
+####  Tunable functionality
 ```cpp
   //Changing pulse width
   // note that analog read is between 0 and 1023
@@ -112,7 +113,7 @@ The control module boasts
   lBound = analogRead(analogPin1) + 500; // lower bound from 500 - 1523
   uBound = (analogRead(analogPin2)*2) + 19000; //upper bound from 19000 - 21046 
 ```
-### Adding an integrator to the input
+#### Adding an integrator to the input
 ```cpp
   //BH1750 - reading light levels
   //Averages the light level wrt pWidth
@@ -126,7 +127,7 @@ The control module boasts
   luxAvg = luxAvg/pWidth;
   i=0;
 ```
-### The slow PWM code
+#### The slow PWM code
 ```cpp
     //solenoid varying
     tau = pWidth*((lux-lBound)/(uBound-lBound)); //goes to zero when lux is at lBound and to one when lux is at uBound
@@ -137,8 +138,7 @@ The control module boasts
     digitalWrite(LED_BUILTIN, LOW);
     delay(pWidth-tau);
 ```
-
-### Debug features
+#### Debug features
 ```cpp
   Serial.print("Period: ");  
   Serial.print(pWidth/1000);
@@ -156,5 +156,5 @@ The control module boasts
   Serial.print(percentage); 
   Serial.println("%"); 
 ```
-#### Sample output 
+***Sample output***
 ![Serial Output](https://github.com/valveteam/control-module/blob/master/Code/Control/control_bh1750/serial_output.JPG?raw=true)
