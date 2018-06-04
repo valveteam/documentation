@@ -29,8 +29,10 @@ email: ms2314@cam.ac.uk
         - [Valve Testing](#valve-testing)
         - [H-Bridge Testing](#h-bridge-testing)
     - [Recommendations](#recommendations)
-        - [Improving Our Design](#improving-our-design)
-        - [Choosing Components](#choosing-components)
+        - [Refining Our Design](#refining-our-design)
+        - [Choosing Your Own Components](#choosing-your-own-components)
+            - [Choosing a H-Bridge](#choosing-a-h-bridge)
+            - [Choosing a Valve](#choosing-a-valve)
 
 <!-- /TOC -->
 ## Introduction
@@ -213,7 +215,41 @@ The conclusions of this experiment were:
 - The idle power draw of each H-Bridge is fairly small, estimated to be approximately 120 mW. 
 - The additional power expended in the `L298P` when the valve is open is 0.77W whilst this figure is 0.35W for the `LMD18201`.
 - The voltage at the solenoid valve output is **lower for the `L298P` than the `LMD18201`** (9.9V v.s. 12V). As a result, even though the valve is fully open in each case and the power draw of the H-Bridge circuit is higher for the `L298P`, the **total power draw is lower for this chip** (5.04W v.s. 5.64W). Give that the `L298P` is much cheaper than the `LMD18201`, it may be a better option - more on this in the next section.  
-
 ## Recommendations
-### Improving Our Design
-### Choosing Components
+### Refining Our Design
+The design and implementation produced worked well for our purposes. If the board were to be redesigned for the final product, the following changes would be made:
+
+- Only use a single H-Bridge. 
+
+- Change the `L298P` package used; the surface mount package used (`PowerSO20`) was difficult to solder (due to the ground plane). A through-hole package can be found and is cheaper (e.g. [here](https://uk.rs-online.com/web/p/motor-driver-ics/3706953/)). 
+
+- The main board can be incorporated into the main control module board since the solenoid valve is operated at a distance using wires. This reduces the amount of wiring involved and could reduce the overall PCB size, decreasing the cost of manufacturing PCBs.
+
+- Decrease the PCB size as much as possible. If the entire PCB is to be replaced if faulty, accessible pins is less of a concern. 
+
+- Include a voltage regulator which steps down the high-voltage rail. It is easy to reduce the power consumption by a significant amount by actuating the valve using 6V rather than 12V. However, in choosing the amount of voltage to step down to, the voltage lost due to the H-Bridge must be taken into account (as the voltage across the valve terminals must be sufficiently large to actuate the valve). For example, if the `L298P` is to be used, a 8V power voltage regulator is an appropriate and is not too expensive (e.g. around £1.10 [here](http://uk.farnell.com/rohm/ba08cc0wfp-e2/ldo-fixed-8v-1a-to-252-5/dp/2342866?st=power%20voltage%20regulator)). Since the valve will be controled quite slowly (SEE HERE), the decrease in response time is not a significant problem. 
+
+### Choosing Your Own Components
+For this submodule, there are two main components to be chosen. This section will give brief guidelines as to how to choose each of the components. 
+#### Choosing a H-Bridge
+In general, the factors to consider when choosing a H-Bridge (in what we believe to be decreasing priority) are:
+
+- Cost: the cost of the H-Bridge contributes significantly to the cost of this submodule and the overall project. Reducing costs even by small amounts can give significant gains if large quantities are produced. 
+
+- Component Availability: if components are available in Tanzania (where initial testing for this will begin), significant savings may be may in import and shipping costs, affecting the overall cost of the module. 
+
+- Power draw: the power draws between lower end and higher end H-Bridges does not differ a large amount. Thus this is low priority though having a low power draw remains advantageous. 
+
+- Additional features: advanced H-Bridges include additional features such as a thermal flag. This are unlikely to be needed in most cases but may be useful.  
+
+#### Choosing a Valve
+The factors to be considered when choosing/designing a solenoid valve (in what we believe to be decreasing priority) are:
+
+- Power draw: the power draws can vary significantly between valves and must be matched well to the solar panel to be used. 
+
+- Water pressure requirements: different valves require different water pressures to be reliable. **A worthwhile test to run is to find the pressure input required to give the maximal flow-rate through the photocatalyst, 6 L/hour.** It would then be useful to convert this into a height at which the water reservoir must be held and to check whether this is reasonable. 
+
+- Cost: the cost of the H-Bridge contributes significantly to the cost of this submodule and the overall project. Reducing costs even by small amounts can give significant gains if large quantities are produced. 
+
+- Component Availability: if components are available in Tanzania (where initial testing for this will begin), significant savings may be may in import and shipping costs, affecting the overall cost of the module. 
+
