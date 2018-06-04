@@ -101,10 +101,18 @@ Please note that footprint and component files (or *libraries*, using KiCad term
 ![Flow Control Module - Schematic](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-schematic.png)
 
 The schematic above shows the connections between different components within for the PCB. Note that:
-- There are two different H-Bridge chips; the [`L298P` (click for the datasheet)](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf) is a standard part, commonly used for hobby electronics and is fairly cheap.[`LMD18021T`](http://www.ti.com/lit/ds/symlink/lmd18201.pdf) which is about twice the price of the `L298P` but is more robust in terms of the input voltages it accepts and incorporates some advanced features such as a thermal flag output. 
+- There are two different H-Bridge chips; the [`L298P` (click for the datasheet)](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf) is a standard part, commonly used for hobby electronics and is fairly cheap.[`LMD18021T`](http://www.ti.com/lit/ds/symlink/lmd18201.pdf) which is about twice the price of the `L298P` but is more robust in terms of the input voltages it accepts and incorporates some advanced features such as a thermal flag output. Both were placed on the same board to allow each to be tested simultaneously. For each, a terminal block connects the output to the solenoid valve. 
+- A terminal block is used to connect the circuit to the power supply. 
+- 6-Pin Molex KK connectors are used to interface between the flow control module and the control module.
+- There are three indicator LEDS; one to show power from the main power supply (e.g. solar panel), the other two indicate which H-Bridge chip is being used. 
 
 ### The PCB
 ![Flow Control Module - PCB](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-layout.png)
+
+The image above shows the PCB layout. Please note the following:
+- The terminal block connecting the PCB to the main power supply is in the top left of the board. 
+- The terminal blocks connecting the PCB to each solenoid valve are on the left of the board. 
+- **There is an error with this PCB** - the ground pad of the 
 
 ### The 3D Module
 ![Flow Control Module - 3D Module](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-3d-model.png)
@@ -119,4 +127,4 @@ At the moment, it is unclear
 
 
 Author: Mrinank Sharma (`ms2314@cam.ac.uk`)\
-Last Updated: 31-5-2018
+Last Updated: 4-6-2018
