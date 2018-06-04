@@ -14,6 +14,7 @@
     - [Our Implementation](#our-implementation)
         - [The Schematic](#the-schematic)
         - [The PCB](#the-pcb)
+        - [The 3D Module](#the-3d-module)
     - [Testing Results](#testing-results)
         - [Valve Testing](#valve-testing)
     - [Recommendations](#recommendations)
@@ -97,8 +98,16 @@ After our design process, we were ready to implement our design. Please note tha
 Please note that footprint and component files (or *libraries*, using KiCad terminology) will be required to modify files in the GitHub repository; these can be found in our parts library repository [here](https://github.com/valveteam/parts-library). 
 
 ### The Schematic
+![Flow Control Module - Schematic](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-schematic.png)
+
+The schematic above shows the connections between different components within for the PCB. Note that:
+- There are two different H-Bridge chips; the [`L298P` (click for the datasheet)](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf) is a standard part, commonly used for hobby electronics and is fairly cheap.[`LMD18021T`](http://www.ti.com/lit/ds/symlink/lmd18201.pdf) which is about twice the price of the `L298P` but is more robust in terms of the input voltages it accepts and incorporates some advanced features such as a thermal flag output. 
 
 ### The PCB
+![Flow Control Module - PCB](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-layout.png)
+
+### The 3D Module
+![Flow Control Module - 3D Module](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/flow_control_res/flow-module-3d-model.png)
 
 ## Testing Results
 ### Valve Testing
