@@ -6,6 +6,13 @@ email: jyjt3@cam.ac.uk
 
 
 # The Control Module
+
+![The Control Module](https://imgur.com/bj9PgSz.jpg)
+
+## Introduction
+The control module was designed to implement part of our team's proposed solution to meet the objectives of the design specification. The module was implemented to interface between the **flow module** and **light module** so that the right flow rates can be achieved alongside with some user debugging features.
+This is intended to describe the hardware and software functionality of the **control module** for the *Solar Powered Valve*. 
+
 <!-- TOC -->
 
 - [The Control Module](#the-control-module)
@@ -17,23 +24,21 @@ email: jyjt3@cam.ac.uk
             - [Reliability](#reliability)
             - [Performance](#performance)
             - [Supportability](#supportability)
-        - [Design Limitations](#design-limitations)
+        - [Design limitations and our solutions](#design-limitations-and-our-solutions)
     - [Implementation](#implementation)
-        - [Usage](#usage)
-        - [Hardware](#hardware)
+        - [The Hardware](#the-hardware)
                 - [Control Module Schematic](#control-module-schematic)
                 - [Control Module PCB](#control-module-pcb)
                 - [Bill of Materials](#bill-of-materials)
-        - [Software](#software)
+        - [The Software](#the-software)
             - [Tunable functionality](#tunable-functionality)
             - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
             - [The slow PWM code](#the-slow-pwm-code)
             - [Debug features](#debug-features)
+    - [Recommendations and further improvements](#recommendations-and-further-improvements)
+        - [The better 'slow' PWM](#the-better-slow-pwm)
 
 <!-- /TOC -->
-## Introduction
-The control module was designed to implement part of our team's proposed solution to meet the objectives of the design specification. The module was implemented to interface between the **flow module** and **light module** so that the right flow rates can be achieved alongside with some user debugging features.
-This is intended to describe the hardware and software functionality of the **control module** for the *Solar Powered Valve*. 
 
 ## Design Process
 To implement the control module, there were three key design factors to consider and engineer towards. 
@@ -61,12 +66,15 @@ To implement the control module, there were three key design factors to consider
 * The system software is completely open source and can be altered for other flow regulation uses.
 #### Supportability
 * The system is built from cheap and readily available parts
-### Design Limitations
-
+### Design limitations and our solutions
+During the verification process we stumbled across several limitations in the components and circuits built which would hold back the entire prototype from achieving the proposed objectives namely; 
+- The solenoid valve has a maximum frequency of 20Hz so the need for a slow PWM was needed to widen the pulse widths so that lower duty cycles can be achieved reliably. 
+- The BH1750 outputs logic HIGH of 3.3V which is 'incompatible' with the Arduino Micro which has a logic HIGH for 5V. (It would still work but long term damage may affect it's reliability) Therefore I2C repeaters was added to the circuits so that the voltages can be step up. This also further improves the maximum operating cable length for the light module which is an added bonus.
+- On top of that, a point which was made clear to us at a later stage of development by Dr Kabla, we implemented an integrator to the inputs of the circuit so that it averages across the period of the duty cycle and does not just respond to one particular light level at the end of the period cycle, this gives the system as a whole a more accurate measurement of how much light is incident onto the photocatalytic reactor. 
 ## Implementation
-### Usage
-
-### Hardware
+The control module is split into two main components which are;
+- The Hardware which serves are the interface between the software and measuring physical quantities such as light as well as output digital logic values to the flow module
+### The Hardware
 The control module boasts
 * Power regulation circuits to down-convert high unstable voltage from solar panel to 5V and 3.3V required by the rest of the circuit.
 * Power Status LEDs for 12V, 5V and 3.3V
@@ -77,10 +85,15 @@ The control module boasts
 * I2C Repeaters to isolate capacitance as well as step up I2C voltages from 3.3V to 5V
 ##### Control Module Schematic
 ![Control Module Schematic](https://imgur.com/GXw5ZXs.jpg)
+
+The schematic above shows the connections between different components within for the PCB.
 ##### Control Module PCB
-![Control Module PCB](https://imgur.com/bj9PgSz.jpg)
+![Control Module Schematic](https://github.com/valveteam/documentation/blob/master/submodules/control_res/control_pcb_box.jpg?raw=true)
+
+The image above shows the PCB layout. Please note the following:
+- Ground planes are **not** shown. 
 ##### Bill of Materials
-| Desceiption                                        | Model                | Quantity | Price/Unit |        | 
+| Description                                        | Model                | Quantity | Price/Unit |        | 
 |----------------------------------------------------|----------------------|----------|------------|--------| 
 | 10uF Capacitors                                    | 10uF                 | 4        | £0.15      | £0.59  | 
 | Green Power Indicator LEDs                         | LED                  | 4        | £0.24      | £0.96  | 
@@ -102,8 +115,14 @@ The control module boasts
 | XP Power 3.3V Switching Regulator (4.75-32V Input) | TR_SERIES            | 1        | £5.41      | £5.41  | 
 | XP Power 5V Switching Regulator (4.75-32V Input)   | TR_SERIES            | 1        | £5.41      | £5.41  | 
 |                                                    |                      |          |   TOTAL    | £40.36 | 
-### Software
+### The Software
+The software uses standard Arduino libraries as well as a BH1750 library for the light sensor. The microcontroller software has four main features. They are as follows;
+* [Tunable functionality](#tunable-functionality)
+* [Integrated Input](#adding-an-integrator-to-the-input)
+* ['Slow' PWM](#the-slow-pwm-code)
+* [Serial Debug](#debug-features)
 ####  Tunable functionality
+The three trimmers have output voltages ranging from 0V to 5V. These voltage inputs are then fed into the Arduino's analog input pins to return an integer value between 0 to 1023. We have then integrated this input into the code so that the lower and upper trigger bounds can be varied. 
 ```cpp
   //Changing pulse width
   // note that analog read is between 0 and 1023
@@ -114,6 +133,7 @@ The control module boasts
   uBound = (analogRead(analogPin2)*2) + 19000; //upper bound from 19000 - 21046 
 ```
 #### Adding an integrator to the input
+As the light levels may be very variable with animals walking in front of it or just simple overcast, the input was averaged acrossed the period of the duty cycle so that the average light level was then used to determine the duty cycle for the next period.
 ```cpp
   //BH1750 - reading light levels
   //Averages the light level wrt pWidth
@@ -128,6 +148,7 @@ The control module boasts
   i=0;
 ```
 #### The slow PWM code
+The slow PWM code is used to extend the period of the duty cycle so that at lower light levels, the duty cycle is not too small such that it exceeds the 20 Hz limit and thus won't be operational.
 ```cpp
     //solenoid varying
     tau = pWidth*((lux-lBound)/(uBound-lBound)); //goes to zero when lux is at lBound and to one when lux is at uBound
@@ -139,6 +160,7 @@ The control module boasts
     delay(pWidth-tau);
 ```
 #### Debug features
+By using the Arduino IDE, we can obtain the period of the duty cycle, light levels, upper bound, lower bound and the state of the valve using the serial monitor.
 ```cpp
   Serial.print("Period: ");  
   Serial.print(pWidth/1000);
@@ -158,3 +180,8 @@ The control module boasts
 ```
 ***Sample output***
 ![Serial Output](https://github.com/valveteam/control-module/blob/master/Code/Control/control_bh1750/serial_output.JPG?raw=true)
+
+## Recommendations and further improvements
+In our testing the control module satisfies all the design specifications that was defined at the beginning of the document. Indeed this is satisfactory but there are several possible improvements and changes that could be made to improve the design further in terms of costs and simplicity. 
+### The better 'slow' PWM
+When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
