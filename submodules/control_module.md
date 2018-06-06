@@ -13,8 +13,9 @@ email: jyjt3@cam.ac.uk
 The control module was designed to implement part of our team's proposed solution to meet the objectives of the design specification. The module was implemented to interface between the **flow module** and **light module** so that the right flow rates can be achieved alongside with some user debugging features.
 This is intended to describe the hardware and software functionality of the **control module** for the *Solar Powered Valve*. 
 
-NOTE : AREF Pin in the Schematic should be left **FLOATING** and **NOT** connected to **GROUND** as the [schematic](#control-module-schematic) & [PCB](#control-module-pcb) suggests. Doing this may result in damage being done to the Arduino. 
-
+[NOTE](#mistakes-in-the-design) :
+* AREF Pin in the Schematic should be **FLOATING** and **NOT** left connected to **GROUND** as the [schematic](#control-module-schematic) & [PCB](#control-module-pcb) suggests. Doing this may result in damage being done to the Arduino. 
+* The I2C repeaters **WILL** cause the I2C on the Arduino Micro to malfunction if not connected to the **light module** due to the lack of pull up resistors.
 <!-- TOC -->
 
 - [Introduction](#introduction)
@@ -37,6 +38,7 @@ NOTE : AREF Pin in the Schematic should be left **FLOATING** and **NOT** connect
         - [The slow PWM code](#the-slow-pwm-code)
         - [Debug features](#debug-features)
 - [Recommendations](#recommendations)
+    - [Mistakes in the design](#mistakes-in-the-design)
     - [Refining our design](#refining-our-design)
     - [Choosing your own components](#choosing-your-own-components)
 
@@ -87,11 +89,12 @@ The control module boasts
 * I2C Repeaters to isolate capacitance as well as step up I2C voltages from 3.3V to 5V
 
 ### Control Module Schematic
-
+This is the schematic for the control module which gives an overview of all the components that is used in the PCB. Most of the circuits were designed using the recommended circuits given in each component data sheet while the connectors were designed to map the exact pin configurations as the flow and light module.
 ![Control Module Schematic](https://imgur.com/GXw5ZXs.jpg)
 
-The schematic above shows the connections between different components within for the PCB.
+The schematic above shows the connections between different components for the PCB.
 ### Control Module PCB
+This is the PCB layout for the control module which shows how the different components are laid out on the PCB and how the tracks connect each component. Indeed this PCB has been designed to be as compact as possible and to improve the user's ability to change parameters. Therefore the two trimmers for the bounds are grouped together while the timmer to adjust the cycle period is on it's own. More consideration could be put into the placement to reduce number if viases on the PCB. 
 ![Control Module Schematic](https://github.com/valveteam/documentation/blob/master/submodules/control_res/control_pcb_box.jpg?raw=true)
 
 The image above shows the PCB layout. Please note the following:
@@ -187,10 +190,16 @@ By using the Arduino IDE, we can obtain the period of the duty cycle, light leve
 
 ## Recommendations
 In our testing the control module satisfies all the design specifications that was defined at the beginning of the document. Indeed this is satisfactory but there are several possible improvements and changes that could be made to improve the design further in terms of costs and simplicity. 
+
+### Mistakes in the design
+* In our designs we wrongly connected AREF to GROUND when it should in fact have been left floating. See documentation on the Arduino website [here](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/).
+* The I2C repeaters will cause an Arduino malfunction due to lak of pull up resistors on the control board. See PCA9517 documentation through [here](http://www.ti.com/lit/ds/symlink/pca9517.pdf).
+
 ### Refining our design
 * When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
 * Remove redundancies. We have included several extra components for debugging and testing purposes. For this circuit we included two I2C repeaters so that we can easily interface between the two different I2C light sensors.
 * When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
+
 ### Choosing your own components
 * The Arduino Micro was selected because of it's simplicity as well as having a lot of documentation on it's capabilities and applications online. Other microcontrollers could also be used but careful consideration to the design objectives must be made so that it can be achieved. 
 * Neglecting the I2C repeaters may be OK. Since the Arduino has an input HIGH of 3V, it would still be functional however, the noise margin is relatively small. Moreover, the capacitance may be detrimental to it's performance over a long distance. 
