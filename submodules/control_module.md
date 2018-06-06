@@ -5,7 +5,7 @@ email: jyjt3@cam.ac.uk
 ---
 
 
-# The Control Module
+ # The Control Module
 
 ![The Control Module](https://imgur.com/bj9PgSz.jpg)
 
@@ -13,30 +13,32 @@ email: jyjt3@cam.ac.uk
 The control module was designed to implement part of our team's proposed solution to meet the objectives of the design specification. The module was implemented to interface between the **flow module** and **light module** so that the right flow rates can be achieved alongside with some user debugging features.
 This is intended to describe the hardware and software functionality of the **control module** for the *Solar Powered Valve*. 
 
+NOTE : AREF Pin in the Schematic should be left **FLOATING** and **NOT** connected to **GROUND** as the [schematic](#control-module-schematic) & [PCB](#control-module-pcb) suggests. Doing this may result in damage being done to the Arduino. 
+
 <!-- TOC -->
 
-- [The Control Module](#the-control-module)
-    - [Introduction](#introduction)
-    - [Design Process](#design-process)
-        - [Design Specifications](#design-specifications)
-            - [Functionality](#functionality)
-            - [Usability](#usability)
-            - [Reliability](#reliability)
-            - [Performance](#performance)
-            - [Supportability](#supportability)
-        - [Design limitations and our solutions](#design-limitations-and-our-solutions)
-    - [Implementation](#implementation)
-        - [The Hardware](#the-hardware)
-                - [Control Module Schematic](#control-module-schematic)
-                - [Control Module PCB](#control-module-pcb)
-                - [Bill of Materials](#bill-of-materials)
-        - [The Software](#the-software)
-            - [Tunable functionality](#tunable-functionality)
-            - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
-            - [The slow PWM code](#the-slow-pwm-code)
-            - [Debug features](#debug-features)
-    - [Recommendations and further improvements](#recommendations-and-further-improvements)
-        - [The better 'slow' PWM](#the-better-slow-pwm)
+- [Introduction](#introduction)
+- [Design Process](#design-process)
+    - [Design Specifications](#design-specifications)
+        - [Functionality](#functionality)
+        - [Usability](#usability)
+        - [Reliability](#reliability)
+        - [Performance](#performance)
+        - [Supportability](#supportability)
+    - [Design limitations and our solutions](#design-limitations-and-our-solutions)
+- [Implementation](#implementation)
+    - [The Hardware](#the-hardware)
+    - [Control Module Schematic](#control-module-schematic)
+    - [Control Module PCB](#control-module-pcb)
+    - [Bill of Materials](#bill-of-materials)
+    - [The Software](#the-software)
+        - [Tunable functionality](#tunable-functionality)
+        - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
+        - [The slow PWM code](#the-slow-pwm-code)
+        - [Debug features](#debug-features)
+- [Recommendations](#recommendations)
+    - [Refining our design](#refining-our-design)
+    - [Choosing your own components](#choosing-your-own-components)
 
 <!-- /TOC -->
 
@@ -83,16 +85,18 @@ The control module boasts
 * Expansion port to allow the addition of another module, with a jumper to select between 5V and 3.3V.
 * MOSFET Circuits to isolate 3.3V circuits from 5V circuits.
 * I2C Repeaters to isolate capacitance as well as step up I2C voltages from 3.3V to 5V
-##### Control Module Schematic
+
+### Control Module Schematic
+
 ![Control Module Schematic](https://imgur.com/GXw5ZXs.jpg)
 
 The schematic above shows the connections between different components within for the PCB.
-##### Control Module PCB
+### Control Module PCB
 ![Control Module Schematic](https://github.com/valveteam/documentation/blob/master/submodules/control_res/control_pcb_box.jpg?raw=true)
 
 The image above shows the PCB layout. Please note the following:
 - Ground planes are **not** shown. 
-##### Bill of Materials
+### Bill of Materials
 | Description                                        | Model                | Quantity | Price/Unit |        | 
 |----------------------------------------------------|----------------------|----------|------------|--------| 
 | 10uF Capacitors                                    | 10uF                 | 4        | £0.15      | £0.59  | 
@@ -181,7 +185,13 @@ By using the Arduino IDE, we can obtain the period of the duty cycle, light leve
 ***Sample output***
 ![Serial Output](https://github.com/valveteam/control-module/blob/master/Code/Control/control_bh1750/serial_output.JPG?raw=true)
 
-## Recommendations and further improvements
+## Recommendations
 In our testing the control module satisfies all the design specifications that was defined at the beginning of the document. Indeed this is satisfactory but there are several possible improvements and changes that could be made to improve the design further in terms of costs and simplicity. 
-### The better 'slow' PWM
-When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
+### Refining our design
+* When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
+* Remove redundancies. We have included several extra components for debugging and testing purposes. For this circuit we included two I2C repeaters so that we can easily interface between the two different I2C light sensors.
+* When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
+### Choosing your own components
+* The Arduino Micro was selected because of it's simplicity as well as having a lot of documentation on it's capabilities and applications online. Other microcontrollers could also be used but careful consideration to the design objectives must be made so that it can be achieved. 
+* Neglecting the I2C repeaters may be OK. Since the Arduino has an input HIGH of 3V, it would still be functional however, the noise margin is relatively small. Moreover, the capacitance may be detrimental to it's performance over a long distance. 
+
