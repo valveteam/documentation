@@ -208,8 +208,10 @@ In our testing the control module satisfies all the design specifications that w
 * When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
 * Remove redundancies. We have included several extra components for debugging and testing purposes. For this circuit we included two I2C repeaters so that we can easily interface between the two different I2C light sensors.
 * When deployed and after all the debugging and adjustments have been made, a better PWM can be realised by changing the way the current code handles cases at which the pulse width is less than 50ms (20 Hz) by changing the pulse width instead of setting a threshold for the width upon achieving a certain rate. That way, we can technically achieve extremely low duty cycles for really delicate applications.
+* Using the expansion port to incorporate a flow rate sensor so that negative feedback can be used to control the flow rate precisely using PID controllers. Arduinos only have one I2C port therefore another model should also be used in this case if we are to also communicate with the light sensor via I2C. 
 
 ### Choosing your own components
 * The Arduino Micro was selected because of it's simplicity as well as having a lot of documentation on it's capabilities and applications online. Other microcontrollers could also be used but careful consideration to the design objectives must be made so that it can be achieved. 
 * Neglecting the I2C repeaters may be OK. Since the Arduino has an input HIGH of 3V, it would still be functional however, the noise margin is relatively small. Moreover, the capacitance may be detrimental to it's performance over a long distance. 
+* For the absolute final design, it is alright to remove one the the light sensor molex connectors as it was put in place in case of redundancies. 
 
