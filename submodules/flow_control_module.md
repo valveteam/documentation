@@ -39,7 +39,7 @@ email: ms2314@cam.ac.uk
 <!-- /TOC -->
 
 ## Introduction
-As you may already know, the purpose of this project is (in short) to develop a method of controlling water flow rate depending on light intensity levels (there is a lot more to it than this - see [the overview](https://valveteam.github.io/)). The flow rate module (as the name might suggest) is an integral sub-module which modules flow rate dependent on some input. 
+As you may already know, the purpose of this project is (in short) to develop a method of controlling water flow rate depending on light intensity levels (there is a lot more to it than this - see [the overview](https://valveteam.github.io/overview.html)). The flow rate module (as the name might suggest) is an integral sub-module which modules flow rate dependent on some input. 
 
 The purpose of this document is two-fold; not only should it aid you in understanding and using the final implementation that we chose for this sub-module but also details the design process to understand the reasoning behind the decisions that we made. 
 
