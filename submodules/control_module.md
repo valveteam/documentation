@@ -1,6 +1,6 @@
 ---
 author: Jason Too
-lastUpdated: 4-6-2018
+lastUpdated: 07-06-2018
 email: jyjt3@cam.ac.uk
 ---
 
@@ -37,6 +37,7 @@ This is intended to describe the hardware and software functionality of the **co
         - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
         - [The slow PWM code](#the-slow-pwm-code)
         - [Debug features](#debug-features)
+        - [Sample output](#sample-output)
 - [Recommendations](#recommendations)
     - [Mistakes in the design](#mistakes-in-the-design)
     - [Refining our design](#refining-our-design)
