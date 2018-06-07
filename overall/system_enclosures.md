@@ -12,9 +12,15 @@ During the latter stages of the project my colleague Jason Too undertook some in
 
 The main enclosure is essentially a box, and this can be built to enclose both the control and flow modules together. A picture of the manufactured box is below.
 
+![Main Enclosure](https://raw.githubusercontent.com/valveteam/documentation/master/overall/system_enclosures_res/control%20flow%20enclosure.jpg)
+
 ## Light Module Enclosure
 
 The concept for the light module was to produce a tray that would mount the light sensor module to the underside of the PET screen that forms the sunlight-facing face of the photocatalytic reactor unit itself. This solves a lot of problems for Majico:
 
 * It is not possible for the light module to be jolted so it no longer faces the same light intensity as the reactor.
 * The light sensor can't be covered with dirt or shadow if the photocatalytic reactor isn't similarly affected.
+
+An image is given below.
+
+![Light Sensor Module Enclosure](https://raw.githubusercontent.com/valveteam/documentation/master/overall/system_enclosures_res/light%20enclosure.jpg)
