@@ -1,7 +1,7 @@
 ---
 author: Joshua Efiong
-lastUpdated: 06-06-2018
-email: ms2314@cam.ac.uk
+lastUpdated: 07-06-2018
+email: je369@cam.ac.uk
 ---
 
 # Principles of Digital Development
@@ -24,7 +24,7 @@ email: ms2314@cam.ac.uk
 
 ## Introduction
 
-The Unicef Principles for Digital Development are a series of key objectives that reflect the lessons learned by the development community in technology-enabled programs. A document outlining what all these principles are and how they should be adhered to can be found [here](/documents/unicef_principles.pdf).
+The Unicef Principles for Digital Development are a series of key objectives that reflect the lessons learned by the development community in technology-enabled programs. A document outlining what all these principles are and how they should be adhered to can be found [here](/resources/unicef_principles.pdf).
 
 The purpose of this page is to self-evaluate our practices against these principles. Each of the nine principles will be briefly described, and then discussed in the context of this project.
 

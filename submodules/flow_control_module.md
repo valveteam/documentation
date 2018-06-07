@@ -62,7 +62,7 @@ The first step undertaken was to draw up a detailed technical specification. The
 ### Brainstorming
 #### **How can we control the flow?**
 The key decision to make is how to module the flow of fluid. Two possible methods of controlling flow rate are outlined below. 
-1. Active Control\
+1. Active Control  
   Fluid can be kept in a reservoir and *pumped* directly to another location.
   
     Advantages:
@@ -72,7 +72,7 @@ The key decision to make is how to module the flow of fluid. Two possible method
     Disadvantages:
       - High power consumption.
 
-2. Passive Control\
+2. Passive Control  
   If fluid is already flowing, its flow can be hindered or slowed down in order to control the flow rate e.g. by moving a plate across a pipe. 
   
     Advantages:
