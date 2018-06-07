@@ -1,11 +1,28 @@
 ---
 author: Joshua Efiong
-lastUpdated: 05-06-2018
+lastUpdated: 07-06-2018
 email: je369@cam.ac.uk
 ---
 
 Light Module
 ============
+
+<!-- TOC -->
+
+- [Technical Specification](#technical-specification)
+- [Brainstorming](#brainstorming)
+- [Schematic](#schematic)
+- [PCB Design](#pcb-design)
+- [PCB Rendering](#pcb-rendering)
+- [Procurement Issues](#procurement-issues)
+- [Light Sensor Devices](#light-sensor-devices)
+    - [BH1750](#bh1750)
+    - [VEML6030](#veml6030)
+- [Design Parts List](#design-parts-list)
+- [Component Selection](#component-selection)
+- [Bill of Materials](#bill-of-materials)
+
+<!-- /TOC -->
 
 Introduction
 ------------
@@ -93,19 +110,176 @@ The VEML6030 has two different response modes, referred to by the [VEML6030 Appl
 
 The ALS response curve is plotted in the figure above, along with the approximate response curve of the human eye. Note the similar wavelength range and response curve shape to that illustrated in the evaluation of the BH1750.
 
-![VEML6030 ALS Response](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/light_module_res/veml6030_white.png)
+![VEML6030 White Channel Response](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/light_module_res/veml6030_white.png)
 
 The VEML6030 offers increased flexibility in the sense it offers a second mode, referred to as the white channel. This has a much wider 250-1000nm wavelength range and a much more uniform response in the 350-700nm range required for the application. The shape of the response curve is shown in the above figure.
 
 ### Design Parts List
 
+The following table lists the parts used during the design process, and their associated costs. This is not necessarily reflective of a per-unit module cost, either for a production or testing model.
+
+|  **Part Description** | **Part Number** | **RS Online Order Code** | **Farnell Order Code** | **Appropriate Supplier** | **Price/Unit (£)** | **Minimum Order** | **Desired Quantity** | **Total Cost** |
+|  ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+|  Ambient Light Sensor | VEML6030 | 122-6787 | 2627811 | Farnell (Order Quantity) | 1.02 | 5 | 5 | 5.1 |
+|  Ambient Light Sensor 2 | BH1750 |  | 2421284 | Farnell (Order Quantity) | 2.15 | 5 | 5 | 10.75 |
+|  UV Light Sensor | VEML6075 |  | 2523611 | Farnell | 1.74 | 1 |  |  |
+|  10R Resistors | MCWR08X10R0FTL |  | 2447556 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
+|  10uF Capacitors | GRM21BR71A106KA73L |  | 2611944 | Farnell (Order Quantity) | 0.147 | 5 | 5 | 0.735 |
+|  100nF Capacitors | 08051C104K4T2A |  | 1833888 | Farnell (Order Quantity) | 0.158 | 10 | 20 | 3.16 |
+|  4.7k Resistors | MCWR08X4701FTL |  | 2447672 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
+|  Green Power Indicator LEDs | HSMG-C170 | 435-6767 | 5790852 | Farnell | 0.241 | 5 | 6 | 1.446 |
+|  470R Resistors | MCWR08X4700FTL |  | 2447662 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
+|   |  |  |  |  |  |  |  | 21.362 |
+
 Testing
 -------
+
+During testing, we relied on various open source libraries. Each one was forked into [our organisation's GitHub namespace](https://github.com/valveteam) so that they could be easily accessed later. The original repositories for the [BH1750 library](https://github.com/claws/BH1750) and [VEML6030 library](https://github.com/NorthernWidget/VEML6030) are easily accessible on GitHub and are actively maintained.
+
+The method we used to verify whether the module was working was to connect an Arduino to the board's Molex or debug header and to run an I2C scan, using the [i2cdetect library](https://github.com/mcauser/i2cdetect), a third library. This is also available via GitHub, and a fork is available in our GitHub namespace. It is not currently actively maintained, but this is not really necessary for this simple test. The I2C scan verifies that the two light sensor devices are addressable. The sketch is given below:
+
+```c
+#include <Wire.h>
+#include <i2cdetect.h>
+
+void setup() {
+  Wire.begin();
+  Serial.begin(9600);
+  Serial.println("i2cdetect example\n");
+  Serial.print("Scanning address range 0x03-0x77\n\n");
+}
+
+void loop() {
+  i2cdetect();  // default range from 0x03 to 0x77
+  delay(2000);
+}
+```
+
+The output to the serial port from the Arduino should look like this for our development board. The VEML6030 is addressable at I2C address 0x10, and the BH1750 at address 0x5c.
+
+```
+i2cdetect example
+Scanning address range 0x03-0x77
+
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+10: 10 -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+50: -- -- -- -- -- -- -- -- -- -- -- -- 5c -- -- --
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+70: -- -- -- -- -- -- -- --
+```
+
+This verifies that the two light sensor devices are working correctly. The next step is to use the two libraries for each device, linked to previously. The following sketch based on an example from its library prints light measurements from the VEML6030 to the serial:
+
+```c
+#include <VEML6030.h>
+
+VEML6030 ALS;
+
+void setup() {
+  Serial.begin(38400);  //Begin Serial
+  ALS.begin(0x10);  //Begin the UV module
+}
+
+void loop() {
+  ALS.AutoRange(); //Determine the best gain and integration time values for given light intensity
+  delay(1000); //Wait for new value to be taken, up to 1 second
+  Serial.print("Lux = ");
+  Serial.print(ALS.GetLux());  //Get compensated UVA value
+  Serial.print(" White = ");
+  Serial.print(ALS.GetWhite());  //Get compensated UVB value
+  Serial.print(" Ambient Raw = ");
+  Serial.println(ALS.GetALS());
+  delay(1000);
+}
+```
+
+The following sketch, again based on its library, performs a similar test for the BH1750:
+
+```c
+/*
+  Example of BH1750 library usage.
+  This example initialises the BH1750 object using the default high resolution
+  continuous mode and then makes a light level reading every second.
+  Connection:
+    VCC -> 3V3 or 5V
+    GND -> GND
+    SCL -> SCL (A5 on Arduino Uno, Leonardo, etc or 21 on Mega and Due, on esp8266 free selectable)
+    SDA -> SDA (A4 on Arduino Uno, Leonardo, etc or 20 on Mega and Due, on esp8266 free selectable)
+    ADD -> (not connected) or GND
+  ADD pin is used to set sensor I2C address. If it has voltage greater or equal to
+  0.7VCC voltage (e.g. you've connected it to VCC) the sensor address will be
+  0x5C. In other case (if ADD voltage less than 0.7 * VCC) the sensor address will
+  be 0x23 (by default).
+*/
+
+#include <Wire.h>
+#include <BH1750.h>
+
+BH1750 lightMeter(0x5c);
+
+void setup(){
+  Serial.begin(9600);
+  // Initialize the I2C bus (BH1750 library doesn't do this automatically)
+  Wire.begin();
+  // On esp8266 you can select SCL and SDA pins using Wire.begin(D4, D3);
+  lightMeter.begin();
+  Serial.println(F("BH1750 Test begin"));
+}
+
+void loop() {
+  uint16_t lux = lightMeter.readLightLevel();
+  Serial.print("Light: ");
+  Serial.print(lux);
+  Serial.println(" lx");
+  delay(1000);
+}
+```
+
+A table of typical lux values for various light sources can be found in the [design guidelines for the VEML6030](https://www.vishay.com/docs/84367/designingveml6030.pdf), but is reproduced below.
+
+| **Luminance** | **Example** |
+| ------------- | ----------- |
+| 1 lx | Full moon overhead at tropical latitudes |
+| 3.4 lx | Dark limit of civil twilight under a clear sky |
+| 50 lx | Family living room |
+| 80 lx | Hallway/bathroom |
+| 100 lx | Very dark overcast day |
+| 320 lx to 500 lx | Office lighting |
+| 400 lx | Sunrise or sunset on a clear day |
+| 1000 lx | Overcast day; typical TV studio lighting |
+| 10 000 lx to 25 000 lx | Full daylight (not direct sun) |
+| 32 000 lx to 130 000 lx | Direct sunlight |
 
 Recommendations
 ---------------
 
 ### Component Selection
 
+As described in the previous section where the two light sensor devices we used were compared, the idea is to find a light sensor that matches the responsivity of the photocatalyst as closely as possible. A sensor device with a 'white channel' mode is well-suited to this purpose, as most light sensor devices are calibrated to have a responsivity profile that approximates that of the human eye for use in dimming mobile phone screens or setting the backlight of a keyboard.
+
+The white channel response curve for the VEML6030 is reproduced below. This has good responsivity across all possible wavelengths that the photocatalyst responds to. Any light sensor device with a similar response profile would in theory work equally well. It is also important to select a device that communicates the light level over I2C, which is a digital communication protocol, as this is how the rest of the system has been setup. Also, this makes any light sensor device compatible with the same debugging tools described in the testing section.
+
+![VEML6030 White Channel Response](https://raw.githubusercontent.com/valveteam/documentation/master/submodules/light_module_res/veml6030_white.png)
+
 ### Bill of Materials
 
+This is a rough final per-unit bill of materials for a production or testing module. This is to give an idea of per-unit cost of this individual sub-module, and its contribution to the overall cost of the system. The assumption is made that the VEML6030 is the chosen light sensor device and that the voltage regulation circuit is moved to the control module as recommended.
+
+|  **No** | **Desceiption** | **Model** | **Value** | **Quantity** | **Price/Unit** |  |
+|  ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+|  1 | Unpolarized capacitor | C | 100nF | 1 | 0.158 | 0.158 |
+|  2 | Unpolarized capacitor | C | 10uF | 1 | 0.147 | 0.147 |
+|  4 | Green Power Indicator LEDs | HSMG-C170 | LED | 3 | 0.241 | 0.723 |
+|  7 | 6 pin connectors | CONN_01X06 | MOLEX_01X06 | 1 | 0.671 | 0.671 |
+|  8 | 2 pin connectors | CONN_01X02 | TERM_01X02 | 1 | 0.45 | 0.45 |
+|  9 | Resistor | R | 10R | 1 | 0.0057 | 0.0057 |
+|  10 | Resistor | R | 10k | 1 | 0.0057 | 0.0057 |
+|  11 | Resistor | R | 4.7k | 2 | 0.0057 | 0.0114 |
+|  12 | Resistor | R | 470R | 3 | 0.0057 | 0.0171 |
+|  13 | Ambient Light Sensor | VEML6030 | VEML6030 | 1 | 1.02 | 1.02 |
+|  14 | Circuit Board Manufacture (Prototyping Costs) |  |  | 1 | 1.3666666666666665 | 1.3666666666666665 |
+|   |  |  |  |  |  | 4.575566666666667 |
