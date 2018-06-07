@@ -23,6 +23,9 @@ This image shows Slack being used to integrate with Asana.
 The image below shows the timeline feature in Asana used for time management. 
 ![Asana Timeline](https://raw.githubusercontent.com/valveteam/documentation/master/overall/teamwork_res/asana-timeline.png)
 
+The image below shows the corresponding 'to-do' list. 
+![Asana To-do](https://raw.githubusercontent.com/valveteam/documentation/master/overall/teamwork_res/asana-todo.png)
+
 Resources were shared between team members primarily by storing all relevant documentation in a shared Google Drive. Code, PCB designs and schematics are all stored in our GitHub with clearly laid out repositories. This worked well for our purposes, enabling team members to not only collaborate but quickly and easily the resources when required. 
 
 Overall, the teamwork and project management was effective, partly aided by the small team size. Improvements could be made in ensuring that Asana was always kept up to date but we believe that the frequency of updates used was sufficient and we believe the deliverables of the project reflect this. 
