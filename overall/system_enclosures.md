@@ -13,7 +13,7 @@ email: je369@cam.ac.uk
 
 <!-- /TOC -->
 
-During the latter stages of the project my colleague Jason Too undertook some initial work to investigate the design of enclosures for our electronic modules, provide design files at handover to the Majico team. These files are available for download [here](/resources/majico_solar_valve_enclosures.zip), and are also available on GitHub.
+During the latter stages of the project my colleague Jason Too undertook some initial work to investigate the design of enclosures for our electronic modules, and provide design files at handover to the Majico team. These files are available for download [here](/resources/majico_solar_valve_enclosures.zip), and are also available on [GitHub](https://github.com/valveteam/enclosures).
 
 ## Main Enclosure
 
