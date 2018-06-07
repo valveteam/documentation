@@ -3,9 +3,37 @@ author: Jason Too
 lastUpdated: 07-06-2018
 email: jyjt3@cam.ac.uk
 ---
+# The Control Module
 
+<!-- TOC -->
 
- # The Control Module
+- [The Control Module](#the-control-module)
+    - [Introduction](#introduction)
+    - [Design Process](#design-process)
+        - [Design Specifications](#design-specifications)
+            - [Functionality](#functionality)
+            - [Usability](#usability)
+            - [Reliability](#reliability)
+            - [Performance](#performance)
+            - [Supportability](#supportability)
+        - [Design limitations and our solutions](#design-limitations-and-our-solutions)
+    - [Implementation](#implementation)
+        - [The Hardware](#the-hardware)
+        - [Control Module Schematic](#control-module-schematic)
+        - [Control Module PCB](#control-module-pcb)
+        - [Bill of Materials](#bill-of-materials)
+        - [The Software](#the-software)
+            - [Tunable functionality](#tunable-functionality)
+            - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
+            - [The slow PWM code](#the-slow-pwm-code)
+            - [Debug features](#debug-features)
+            - [Sample output](#sample-output)
+    - [Recommendations](#recommendations)
+        - [Mistakes in the design](#mistakes-in-the-design)
+        - [Refining our design](#refining-our-design)
+        - [Choosing your own components](#choosing-your-own-components)
+
+<!-- /TOC -->
 
 ![The Control Module](https://imgur.com/bj9PgSz.jpg)
 
@@ -16,34 +44,6 @@ This is intended to describe the hardware and software functionality of the **co
 [NOTE](#mistakes-in-the-design) :
 * AREF Pin in the Schematic should be **FLOATING** and **NOT** left connected to **GROUND** as the [schematic](#control-module-schematic) & [PCB](#control-module-pcb) suggests. Doing this may result in damage being done to the Arduino. 
 * The I2C repeaters **WILL** cause the I2C on the Arduino Micro to malfunction if not connected to the **light module** due to the lack of pull up resistors.
-<!-- TOC -->
-
-- [Introduction](#introduction)
-- [Design Process](#design-process)
-    - [Design Specifications](#design-specifications)
-        - [Functionality](#functionality)
-        - [Usability](#usability)
-        - [Reliability](#reliability)
-        - [Performance](#performance)
-        - [Supportability](#supportability)
-    - [Design limitations and our solutions](#design-limitations-and-our-solutions)
-- [Implementation](#implementation)
-    - [The Hardware](#the-hardware)
-    - [Control Module Schematic](#control-module-schematic)
-    - [Control Module PCB](#control-module-pcb)
-    - [Bill of Materials](#bill-of-materials)
-    - [The Software](#the-software)
-        - [Tunable functionality](#tunable-functionality)
-        - [Adding an integrator to the input](#adding-an-integrator-to-the-input)
-        - [The slow PWM code](#the-slow-pwm-code)
-        - [Debug features](#debug-features)
-        - [Sample output](#sample-output)
-- [Recommendations](#recommendations)
-    - [Mistakes in the design](#mistakes-in-the-design)
-    - [Refining our design](#refining-our-design)
-    - [Choosing your own components](#choosing-your-own-components)
-
-<!-- /TOC -->
 
 ## Design Process
 To implement the control module, there were three key design factors to consider and engineer towards. 

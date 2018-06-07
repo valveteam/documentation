@@ -3,7 +3,6 @@ author: Joshua Efiong
 lastUpdated: 07-06-2018
 email: je369@cam.ac.uk
 ---
-
 # Principles of Digital Development
 
 <!-- TOC -->

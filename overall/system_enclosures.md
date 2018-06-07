@@ -3,8 +3,15 @@ author: Joshua Efiong
 lastUpdated: 07-06-2018
 email: je369@cam.ac.uk
 ---
-
 # System Enclosures
+
+<!-- TOC -->
+
+- [System Enclosures](#system-enclosures)
+    - [Main Enclosure](#main-enclosure)
+    - [Light Module Enclosure](#light-module-enclosure)
+
+<!-- /TOC -->
 
 During the latter stages of the project my colleague Jason Too undertook some initial work to investigate the design of enclosures for our electronic modules, provide design files at handover to the Majico team. These files are available for download [here](/resources/majico_solar_valve_enclosures.zip), and are also available on GitHub.
 

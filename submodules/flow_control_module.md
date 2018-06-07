@@ -4,6 +4,7 @@ lastUpdated: 06-06-2018
 email: ms2314@cam.ac.uk
 ---
 # Flow Control Module
+
 <!-- TOC -->
 
 - [Flow Control Module](#flow-control-module)
@@ -36,6 +37,7 @@ email: ms2314@cam.ac.uk
     - [That's all from me!](#thats-all-from-me)
 
 <!-- /TOC -->
+
 ## Introduction
 As you may already know, the purpose of this project is (in short) to develop a method of controlling water flow rate depending on light intensity levels (there is a lot more to it than this - see [the overview](https://valveteam.github.io/)). The flow rate module (as the name might suggest) is an integral sub-module which modules flow rate dependent on some input. 
 
