@@ -108,9 +108,11 @@ This is the PCB layout for the control module which shows how the different comp
 
 The image above shows the PCB layout. Please note the following:
 - Ground planes are **not** shown. 
+
 ### Bill of Materials
+
 | Description                                        | Model                | Quantity | Price/Unit |        | 
-|----------------------------------------------------|----------------------|----------|------------|--------| 
+| -------------------------------------------------- | -------------------- | -------- | ---------- | ------ | 
 | 10uF Capacitors                                    | 10uF                 | 4        | £0.15      | £0.59  | 
 | Green Power Indicator LEDs                         | LED                  | 4        | £0.24      | £0.96  | 
 | I2C Repeater                                       | I2C-PCA9517          | 2        | £1.71      | £3.42  | 
@@ -130,7 +132,8 @@ The image above shows the PCB layout. Please note the following:
 | Arduino Micro                                      | ARDUINO_MICRO_SHIELD | 1        | £16.07     | £16.07 | 
 | XP Power 3.3V Switching Regulator (4.75-32V Input) | TR_SERIES            | 1        | £5.41      | £5.41  | 
 | XP Power 5V Switching Regulator (4.75-32V Input)   | TR_SERIES            | 1        | £5.41      | £5.41  | 
-|                                                    |                      |          |   TOTAL    | £40.36 | 
+| -                                                  | -                    | -        |   TOTAL    | £40.36 | 
+
 ### The Software
 The software uses standard Arduino libraries as well as a BH1750 library for the light sensor. The microcontroller software has four main features. They are as follows;
 * [Tunable functionality](#tunable-functionality)
