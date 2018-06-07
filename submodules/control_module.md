@@ -1,6 +1,6 @@
 ---
 author: Jason Too
-lastUpdated: 04-06-2018
+lastUpdated: 4-6-2018
 email: jyjt3@cam.ac.uk
 ---
 
@@ -128,6 +128,12 @@ The software uses standard Arduino libraries as well as a BH1750 library for the
 * [Integrated Input](#adding-an-integrator-to-the-input)
 * ['Slow' PWM](#the-slow-pwm-code)
 * [Serial Debug](#debug-features)
+These features which are explained in more detail later are incoperated into the software to ensure robust and reliable operation of the circuits. 
+
+![Software flow chart](https://github.com/valveteam/documentation/blob/master/submodules/control_res/control_flow_chart.png?raw=true)
+
+From the flow chart above, we can see that the system boots up in a state where all the outputs are zero so that in the odd event that loop code does not run, the valve will be closed and no current will be flowing out of the H-bridges. Moreover, when reading the light input, the light levels are averaged across the period of the duty cycle so that we are determining the flow rate of the water reactor based on the total amount of light incident on the phtocatalytic filter. By using a 'slow' PWM, we are able to obtain a linear flow that varies from 0% (always closed) to 100% (always open) from the solenoid valve. Finally, the serial debug flushes all the variables used in deciding on the flow rate onto the serial for the user to read before returning to top of the loop function again.  
+
 ####  Tunable functionality
 The three trimmers have output voltages ranging from 0V to 5V. These voltage inputs are then fed into the Arduino's analog input pins to return an integer value between 0 to 1023. We have then integrated this input into the code so that the lower and upper trigger bounds can be varied. 
 ```cpp
@@ -185,8 +191,10 @@ By using the Arduino IDE, we can obtain the period of the duty cycle, light leve
   Serial.print(percentage); 
   Serial.println("%"); 
 ```
-***Sample output***
-![Serial Output](https://github.com/valveteam/control-module/blob/master/Code/Control/control_bh1750/serial_output.JPG?raw=true)
+#### Sample output
+
+These are the values which are being output by the serial output. By simply running the serial monitor on the Arduino IDE, the user can easily monitor all the crucial parameters of the system. No programming knowledge is required for this functionality which should make it easier for data collection as well as calibrating multiple solar powered valves. 
+![Serial Output](https://github.com/valveteam/documentation/blob/master/submodules/control_res/serial_output.png?raw=true)
 
 ## Recommendations
 In our testing the control module satisfies all the design specifications that was defined at the beginning of the document. Indeed this is satisfactory but there are several possible improvements and changes that could be made to improve the design further in terms of costs and simplicity. 
