@@ -121,15 +121,15 @@ The following table lists the parts used during the design process, and their as
 |  **Part Description** | **Part Number** | **RS Online Order Code** | **Farnell Order Code** | **Appropriate Supplier** | **Price/Unit (£)** | **Minimum Order** | **Desired Quantity** | **Total Cost** |
 |  ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 |  Ambient Light Sensor | VEML6030 | 122-6787 | 2627811 | Farnell (Order Quantity) | 1.02 | 5 | 5 | 5.1 |
-|  Ambient Light Sensor 2 | BH1750 |  | 2421284 | Farnell (Order Quantity) | 2.15 | 5 | 5 | 10.75 |
-|  UV Light Sensor | VEML6075 |  | 2523611 | Farnell | 1.74 | 1 |  |  |
-|  10R Resistors | MCWR08X10R0FTL |  | 2447556 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
-|  10uF Capacitors | GRM21BR71A106KA73L |  | 2611944 | Farnell (Order Quantity) | 0.147 | 5 | 5 | 0.735 |
-|  100nF Capacitors | 08051C104K4T2A |  | 1833888 | Farnell (Order Quantity) | 0.158 | 10 | 20 | 3.16 |
-|  4.7k Resistors | MCWR08X4701FTL |  | 2447672 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
+|  Ambient Light Sensor 2 | BH1750 | - | 2421284 | Farnell (Order Quantity) | 2.15 | 5 | 5 | 10.75 |
+|  UV Light Sensor | VEML6075 | - | 2523611 | Farnell | 1.74 | 1 | - | - |
+|  10R Resistors | MCWR08X10R0FTL | - | 2447556 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
+|  10uF Capacitors | GRM21BR71A106KA73L | - | 2611944 | Farnell (Order Quantity) | 0.147 | 5 | 5 | 0.735 |
+|  100nF Capacitors | 08051C104K4T2A | - | 1833888 | Farnell (Order Quantity) | 0.158 | 10 | 20 | 3.16 |
+|  4.7k Resistors | MCWR08X4701FTL | - | 2447672 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
 |  Green Power Indicator LEDs | HSMG-C170 | 435-6767 | 5790852 | Farnell | 0.241 | 5 | 6 | 1.446 |
-|  470R Resistors | MCWR08X4700FTL |  | 2447662 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
-|   |  |  |  |  |  |  |  | 21.362 |
+|  470R Resistors | MCWR08X4700FTL | - | 2447662 | Farnell (Order Quantity) | 0.0057 | 10 | 10 | 0.057 |
+|   | - | - | - | - | - | - | Total | 21.362 |
 
 Testing
 -------
@@ -269,7 +269,7 @@ The white channel response curve for the VEML6030 is reproduced below. This has 
 
 This is a rough final per-unit bill of materials for a production or testing module. This is to give an idea of per-unit cost of this individual sub-module, and its contribution to the overall cost of the system. The assumption is made that the VEML6030 is the chosen light sensor device and that the voltage regulation circuit is moved to the control module as recommended.
 
-|  **No** | **Desceiption** | **Model** | **Value** | **Quantity** | **Price/Unit** |  |
+|  **No** | **Desceiption** | **Model** | **Value** | **Quantity** | **Price/Unit** | - |
 |  ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 |  1 | Unpolarized capacitor | C | 100nF | 1 | 0.158 | 0.158 |
 |  2 | Unpolarized capacitor | C | 10uF | 1 | 0.147 | 0.147 |
@@ -281,5 +281,5 @@ This is a rough final per-unit bill of materials for a production or testing mod
 |  11 | Resistor | R | 4.7k | 2 | 0.0057 | 0.0114 |
 |  12 | Resistor | R | 470R | 3 | 0.0057 | 0.0171 |
 |  13 | Ambient Light Sensor | VEML6030 | VEML6030 | 1 | 1.02 | 1.02 |
-|  14 | Circuit Board Manufacture (Prototyping Costs) |  |  | 1 | 1.3666666666666665 | 1.3666666666666665 |
-|   |  |  |  |  |  | 4.575566666666667 |
+|  14 | Circuit Board Manufacture (Prototyping Costs) | - | - | 1 | 1.3666666666666665 | 1.3666666666666665 |
+|  - | - | - | - | - | Total | 4.575566666666667 |
