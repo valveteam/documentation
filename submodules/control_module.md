@@ -52,6 +52,7 @@ To implement the control module, there were three key design factors to consider
 * Lastly, the microcontroller itself should have sufficient features (inputs & outputs) so that the user is able to tweak certain parameters and understand how the microcontroller is behaving given a certain set of inputs. In particular, the control module had to have trimmers so that the upper and lower trigger bounds for flow can be adjusted to cope with different light levels. LEDs were added so that we can monitor the output signal into the flow module and thus, will be able to easily [troubleshoot](#debug-features) any issues we come across. 
 
 ### Design Specifications
+
 #### Functionality
 * The system sends an input voltage into the **valve module** to control the flow rate using "slow PWM".
 * The system is able to measure the the lux levels sent by the **light module** with sufficient precision & reliability over I2C.
@@ -59,26 +60,33 @@ To implement the control module, there were three key design factors to consider
 * The system has tunable lower and upper thresholds to control the minimum light level to allow flow and maximum light level to completely open the valve.
 * The system has tunable pulse widths/duty cycle lengths for easy debugging and can be optimised to improve the reliability of the valve. (the system is no longer restrained by the flow rate as the PWM can be made faster to respond to high flow rates)
 * The system boast break out connectors which allows additional functionality to be implemented at a later date. - e.g. flow rate sensor so that a proper PID controller could be put in place to optimise the flow rates.  
+
 #### Usability
 * The system must have an input voltage from 6V to 20V.
 * The system has a logic HIGH value of 5V.  
+
 #### Reliability
 * The system will always boot up in the correct state to carry out all the functionalities as given above.
 * The system should be operational in temperatures between 0-60℃.  
+
 #### Performance
 * The system is able to respond to changes in light within a second. 
 * The system is limited by the performance of the solenoid valve which is only able to cope with frequencies up to 20 Hz. 
 * The system software is completely open source and can be altered for other flow regulation uses.  
+
 #### Supportability
 * The system is built from cheap and readily available parts  
+
 ### Design limitations and our solutions
 During the verification process we stumbled across several limitations in the components and circuits built which would hold back the entire prototype from achieving the proposed objectives namely; 
 - The solenoid valve has a maximum frequency of 20Hz so the need for a slow PWM was needed to widen the pulse widths so that lower duty cycles can be achieved reliably. 
 - The BH1750 outputs logic HIGH of 3.3V which is 'incompatible' with the Arduino Micro which has a logic HIGH for 5V. (It would still work but long term damage may affect it's reliability) Therefore I2C repeaters was added to the circuits so that the voltages can be step up. This also further improves the maximum operating cable length for the light module which is an added bonus.
 - On top of that, a point which was made clear to us at a later stage of development by Dr Kabla, we implemented an integrator to the inputs of the circuit so that it averages across the period of the duty cycle and does not just respond to one particular light level at the end of the period cycle, this gives the system as a whole a more accurate measurement of how much light is incident onto the photocatalytic reactor.  
+
 ## Implementation
 The control module is split into two main components which are;
 - The Hardware which serves are the interface between the software and measuring physical quantities such as light as well as output digital logic values to the flow module  
+
 ### The Hardware
 The control module boasts
 * Power regulation circuits to down-convert high unstable voltage from solar panel to 5V and 3.3V required by the rest of the circuit.
