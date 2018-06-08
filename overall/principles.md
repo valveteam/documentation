@@ -3,11 +3,11 @@ author: Joshua Efiong
 lastUpdated: 07-06-2018
 email: je369@cam.ac.uk
 ---
-# Principles of Digital Development
+# Principles for Digital Development
 
 <!-- TOC -->
 
-- [Principles of Digital Development](#principles-of-digital-development)
+- [Principles for Digital Development](#principles-for-digital-development)
     - [Introduction](#introduction)
     - [Design With The User](#design-with-the-user)
     - [Understand the Ecosystem](#understand-the-ecosystem)
